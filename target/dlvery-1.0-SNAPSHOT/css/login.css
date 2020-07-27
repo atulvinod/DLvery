@@ -1,0 +1,54 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 27-Jul-2020, 3:19:05 pm
+    Author     : atulv
+*/
+
+.login-row{
+    margin-top: 10vh
+}
+.login-icon{
+    font-size:4rem;
+   padding:5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-tabs{
+    border:1px solid lightgrey;
+    padding: 5%;
+   border-radius:10px;
+}
+.right-margin{
+    margin-right: 1rem;
+}
+.login-heading{
+    text-align: center;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+}
+.login-banner{
+    padding-bottom: 3rem;
+}
+.login-banner-box{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.login-banner-box > span{
+    font-size:24px;
+}
+.login-banner-box> svg{
+    font-size: 24px;
+}
+form{
+    margin-top: 2rem
+}
+.error{
+    color:red;
+    font-size:18px;
+}

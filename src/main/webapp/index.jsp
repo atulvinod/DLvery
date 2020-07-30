@@ -51,7 +51,7 @@
                          <h5>Delivery Management</h5>
                     </div>
                     <div class="text-center">
-                        <a href="" class="btn btn-primary">Login to Delivery Management</a>
+                        <a href="/login-agent.jsp" class="btn btn-primary">Login to Delivery Management</a>
                     </div> 
                    
 

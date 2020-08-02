@@ -5,6 +5,7 @@
  */
 package com.mycompany.dlvery.datalayer;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import javax.sql.DataSource;
  *
  * @author atulv
  */
-public class agentAuthenticationQueries {
+public class agentAuthenticationQueries implements Serializable{
     
     DataSource dataSource;
     static Connection connection;
@@ -40,7 +41,10 @@ public class agentAuthenticationQueries {
     public static boolean isAgentAuthorized(String auth_id) throws SQLException{
          PreparedStatement statement =  connection.prepareStatement("SELECT auth_status FROM agent_details where agent_auth_id = ?");
         statement.setString(1, auth_id);
-        return statement.executeQuery().getInt(1) == 1;
+         ResultSet s = statement.executeQuery();
+         int result = 0;
+        while(s.next()) result = s.getInt(1);
+         return result != 0;
     }
     
     
@@ -55,15 +59,23 @@ public class agentAuthenticationQueries {
     }
     
     public static void updateAgentAuth(String auth_id) throws SQLException{
-        PreparedStatement statement = connection.prepareStatement("UPDATE agent_details SET agent_auth_status = true WHERE agent_auth_id = ?");
+        PreparedStatement statement = connection.prepareStatement("UPDATE agent_details SET auth_status = true WHERE agent_auth_id = ?");
         statement.setString(1, auth_id);
         statement.execute();
     }
     
     public static ResultSet getPendingAgentAuths() throws SQLException{
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM agent_table WHERE agent_auth_status = false");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM agent_details WHERE auth_status = false");
         return statement.executeQuery();
     }
+    public static int getAgentID(String id) throws SQLException{
+        PreparedStatement statement = connection.prepareStatement("SELECT agent_id FROM agent_details WHERE agent_auth_id = ?");
+        statement.setString(1,id);
+        ResultSet rs = statement.executeQuery();
+        int agent_id = 0;
+        while(rs.next()) agent_id = rs.getInt("agent_id");
+        return agent_id;
+    } 
     
     public void closeConnection() throws SQLException{
         connection.close();

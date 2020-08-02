@@ -1,6 +1,6 @@
 <%-- 
-    Document   : reports.jsp
-    Created on : 27-Jul-2020, 4:21:01 pm
+    Document   : history
+    Created on : 31-Jul-2020, 3:18:21 pm
     Author     : atulv
 --%>
 
@@ -12,9 +12,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%@include file="../navbar.jsp" %>
+         <%@include file="../../navbar.jsp" %>
         <div>
-            <%@include file="subnav.jsp" %>
+            <%@include file="../subnav.jsp" %>
+            <%@include file="delivery-nav.jsp" %>
         </div>
     </body>
 </html>

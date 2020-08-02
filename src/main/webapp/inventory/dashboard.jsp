@@ -9,9 +9,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.mycompany.dlvery.datalayer.inventoryQueries" %>
-<%@page import="com.mycompany.dlvery.datalayer.agentAuthenticationQueries"%>
 <jsp:useBean id="sql" class="com.mycompany.dlvery.datalayer.inventoryQueries"/>
-<jsp:useBean id="agent" class="com.mycompany.dlvery.datalayer.agentAuthenticationQueries"/>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,30 +30,31 @@
                     <h3>Inventory</h3>
                 </div>
                 <div class="col-md-5 clearfix inventory-buttons">
-                    
-                        <button class="btn btn-primary float-right">Upload Inventory File</button>
 
-                    
-                        <button class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" >New Inventory Items</button>
+                    <button class="btn btn-primary float-right">Upload Inventory File</button>
+
+
+                    <button class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModal" >New Inventory Items</button>
 
                 </div>
-                
+
             </div>
             <hr>
         </div> 
-    
-        
-        <div class="container"> 
-            <% 
-                ResultSet allInventoryItems = sql.getAllInventory();
-                
-                if(allInventoryItems.next()==false){
-            %>
-                    <div class="text-center no-inventory-banner" >
-                      <h4 class="text-center text-muted">Inventory is empty</h4>
-                     </div>
+
+
+        <div class="container" id="tableContainer"> 
             <%
-                }else{
+                ResultSet allInventoryItems = sql.getAllInventory();
+
+                if (allInventoryItems.next() == false) {
+            %>
+            <div class="text-center no-inventory-banner" id="no-inventory" >
+                <h4 class="text-center text-muted">Inventory is empty</h4>
+            </div>
+            <%
+            } else {
+                allInventoryItems.beforeFirst();
             %>
             <table  class="table">
                 <thead>
@@ -70,26 +70,43 @@
                     </tr>
                 </thead>
                 <tbody id="inventoryTable">
-                <% while(allInventoryItems.next()){ %>
-                <tr class="text-center" id="inv<% out.print(allInventoryItems.getString("inventory_id"));%>">
-                    <td><% out.print(allInventoryItems.getString("sku")); %></td>
-                    <td><% out.print(allInventoryItems.getString("name"));%></td>
-                    <td><% out.print(allInventoryItems.getString("move_in_date"));%></td>
-                    <td><% out.print(allInventoryItems.getString("perishable").equals("0") ? false : true);%></td>
-                    <td><% out.print(allInventoryItems.getString("expiry") == null ? "--No Expiry--" : allInventoryItems.getString("expiry"));%></td>
-                    <td><% out.print(allInventoryItems.getString("damaged").equals("0") ? false : true);%></td>
-                    <td><% out.print(allInventoryItems.getString("move_out_date"));%></td>
-                    <td> <a href="#" onclick="deleteInventory(<% out.print(allInventoryItems.getString("inventory_id")); %>)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
-                </tr> 
-                <% //while loop end 
-                  }%>
+                    
+                    <% while (allInventoryItems.next()) { %>
+                    <tr class="text-center" id="inv<% out.print(allInventoryItems.getString("inventory_id"));%>">
+                        <td><% out.print(allInventoryItems.getString("sku")); %></td>
+                        <td><% out.print(allInventoryItems.getString("name"));%></td>
+                        <td><% out.print(allInventoryItems.getString("move_in_date"));%></td>
+                        <td><% out.print(allInventoryItems.getString("perishable").equals("0") ? false : true);%></td>
+                        <td><% out.print(allInventoryItems.getString("expiry") == null ? "--No Expiry--" : allInventoryItems.getString("expiry"));%></td>
+                        <td><% out.print(allInventoryItems.getString("damaged").equals("0") ? false : true);%></td>
+                        <td><% out.print(allInventoryItems.getString("move_out_date"));%></td>
+                        <td> <a href="#" onclick="deleteInventory(<% out.print(allInventoryItems.getString("inventory_id")); %>)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                    </tr> 
+                    <% //while loop end 
+                        }%>
                 </tbody>
 
             </table>
-            
-            <%   }  %>
+
+            <%   }%>
         </div>
-        
+
+   
+
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded mr-2" alt="...">
+                <strong class="mr-auto">Bootstrap</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+        </div>
+
+
         <%@include file="newitemModal.jsp"%>
         <script src="/javascript/dashboard.js"></script>
     </body>

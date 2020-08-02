@@ -65,6 +65,7 @@ public class createNewInventoryItem extends HttpServlet {
         String moveOutDate = request.getParameter("moveOutDate");
         String itemName = request.getParameter("itemName");
         String deliveryAddress = request.getParameter("deliveryAddress");
+        String deliveryTo = request.getParameter("deliveryTo");
         
         String perishable = request.getParameter("perishable");
         boolean perishableValue = perishable == null ? false : true;
@@ -76,7 +77,7 @@ public class createNewInventoryItem extends HttpServlet {
         try {
             
             response.setStatus(201);
-            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, moveInDate, moveOutDate, perishableValue, expiry, damagedValue, deliveryAddress));
+            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, moveInDate, moveOutDate, perishableValue, expiry, damagedValue, deliveryAddress,deliveryTo));
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(500);

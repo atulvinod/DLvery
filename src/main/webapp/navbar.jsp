@@ -4,7 +4,7 @@
     Author     : atulv
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,17 +21,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav justify-content-end ml-auto">
-                    <li class="nav-item active">
-                        <% if(request.isUserInRole("manager")) { %>
-                        <a class="nav-link" href="/services/sessionInvalidate">Logout <span class="sr-only">(current)</span></a>
-                        <% } %>
-                    </li>
-                    <li class="nav-item active">
-                        <% if(request.isUserInRole("manager")) { %>
-                        <a class="nav-link" href="#">Agent Authorization Requests <span class="sr-only">(current)</span></a>
-                        <% } %>
-                    </li>
 
+                    <% if (request.isUserInRole("manager")) { %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#agentsModal">Agent Authorization Requests <span class="sr-only">(current)</span></a>
+                    </li>
+                      <% }%>
+                      
+                     
+                      
+                      <% if(session.getAttribute("userName")!=null || request.isUserInRole("manager")){ %>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/services/sessionInvalidate" >Logout <span class="sr-only">(current)</span></a>
+                    </li>
+                     <% } %>
                 </ul>
             </div>
         </nav>

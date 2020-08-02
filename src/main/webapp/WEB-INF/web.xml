@@ -16,6 +16,18 @@
         <servlet-name>agentLogin</servlet-name>
         <servlet-class>com.mycompany.dlvery.services.agentLogin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateAgentStatus</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.updateAgentStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>assignDeliveryToAgent</servlet-name>
+        <servlet-class>assignDeliveryToAgent</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateDelivery</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.updateDelivery</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>createNewInventoryItem</servlet-name>
         <url-pattern>/services/createNewInventoryItem</url-pattern>
@@ -31,6 +43,18 @@
     <servlet-mapping>
         <servlet-name>agentLogin</servlet-name>
         <url-pattern>/agentServices/agentLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateAgentStatus</servlet-name>
+        <url-pattern>/services/updateAgentStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>assignDeliveryToAgent</servlet-name>
+        <url-pattern>/services/assignDeliveryToAgent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateDelivery</servlet-name>
+        <url-pattern>/agentServices/updateDelivery</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -2,15 +2,18 @@
     Document   : deliveries
     Created on : 27-Jul-2020, 4:21:15 pm
     Author     : atulv
-    Description : To assign deliveries to agents in the database
+    Description : To assign deliveries to agents in the database, checks for unassigned
 --%>
 
+<%@page import="com.mycompany.dlvery.model.agent_details"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 
 <%@page import="com.mycompany.dlvery.datalayer.inventoryQueries" %>
 <%@page import="com.mycompany.dlvery.datalayer.agentQueries" %>
+<%@page import="com.mycompany.dlvery.model.inventory_table" %>
 
 <jsp:useBean id="sql" class="com.mycompany.dlvery.datalayer.inventoryQueries"/>
 <jsp:useBean id="agentQ" class="com.mycompany.dlvery.datalayer.agentQueries"/>
@@ -30,14 +33,12 @@
             <%@include file="delivery-nav.jsp" %>
         </div>
         <div style="margin-top: 1rem" class="container">
-            <% ResultSet getUndeliveredInventory = sql.getUndeliveredInventoryAccToPriority();
-                if (getUndeliveredInventory.next() == false) {   %>
-            <div class="text-center no-inventory-banner" >
-                <h4 class="text-center text-muted">There are no undelivered inventory items</h4>
-            </div>
+            <% List<inventory_table> getUndeliveredInventory = sql.getUnAssigned();
+                if (getUndeliveredInventory.size()== 0) {   %>
+            
 
             <%      } else {
-                getUndeliveredInventory.beforeFirst(); %>
+                %>
             <table class="table">
                 <thead>
                     <tr>
@@ -52,17 +53,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%while (getUndeliveredInventory.next()) { %>
-                    <tr id="inv<%out.print(getUndeliveredInventory.getString("inventory_id"));%>">
-                        <td><%out.print(getUndeliveredInventory.getString("inventory_id"));%></td>
-                        <td><%out.print(getUndeliveredInventory.getString("sku"));%></td>
-                        <td><%out.print(getUndeliveredInventory.getString("name"));%></td>
-                        <td><%out.print(getUndeliveredInventory.getString("move_in_date"));%></td>
-                        <td><%out.print(getUndeliveredInventory.getString("move_out_date"));%></td>
-                        <td><% out.print(getUndeliveredInventory.getString("perishable").equals("0") ? false : true);%></td>
-                        <td><% out.print(getUndeliveredInventory.getString("damaged").equals("0") ? false : true);%></td>
+                    <%for (int i = 0 ; i< getUndeliveredInventory.size() ; i++) { inventory_table item = getUndeliveredInventory.get(i);%>
+                    <tr id="inv<%out.print(item.getInventory_id());%>">
+                        <td><%out.print(item.getInventory_id());%></td>
+                        <td><%out.print(item.getSku());%></td>
+                        <td><%out.print(item.getName());%></td>
+                        <td><%out.print(item.getMove_in_date());%></td>
+                        <td><%out.print(item.getMove_out_date());%></td>
+                        <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
+                        <td><% out.print(item.getDamaged().equals("0") ? false : true);%></td>
 
-                        <td><button class="btn btn-success" onclick="openAssignModal('<%out.print(getUndeliveredInventory.getString("inventory_id"));%>')">Assign</button> </td>
+                        <td><button class="btn btn-success" onclick="openAssignModal('<%out.print(item.getInventory_id());%>')">Assign</button> </td>
                     </tr>  
 
                     <% }%>
@@ -87,13 +88,13 @@
                     </div>
                     <div class="modal-body">
                         <form  id="assignDeliveryForm">
-                            <% ResultSet authenticatedAgents = agentQ.getAllAgentDetails();
-                                while (authenticatedAgents.next()) {
+                            <% List<agent_details> authenticatedAgents = agentQ.getAllAgentDetails();
+                            for(int i = 0 ; i< authenticatedAgents.size() ; i ++) { agent_details detail = authenticatedAgents.get(i);
                             %>
                             <div class="form-check" style="margin-bottom: 1.1rem">
-                                <input class="form-check-input" type="radio" name="agentRadio"  value="<%out.print(authenticatedAgents.getString("agent_id"));%>">
+                                <input class="form-check-input" type="radio" name="agentRadio"  value="<%out.print(detail.getAgent_id());%>">
                                 <label class="form-check-label" for="agentRadio">
-                                    <%out.print(authenticatedAgents.getString("agent_name"));%>
+                                    <%out.print(detail.getAgent_name());%>
                                 </label>
                             </div>
                             <% };%>

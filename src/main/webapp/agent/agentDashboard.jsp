@@ -4,10 +4,13 @@
     Author     : atulv
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@page import="com.mycompany.dlvery.datalayer.agentQueries" %>
+<%@page import="com.mycompany.dlvery.model.pending_for_agent" %>
 <jsp:useBean id="agentQ" class="com.mycompany.dlvery.datalayer.agentQueries"/>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,16 +23,16 @@
         <br>
         <div class="container">
 
-            <% ResultSet res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
+            <% List<pending_for_agent> res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
 
-                if (res.next() == false) {
+                if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No new deliveries</h4>
             </div>
 
             <% } else {
-                res.beforeFirst(); %>
+                 %>
             <table class="table">
                 <thead>
                     <tr>
@@ -43,16 +46,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% while (res.next()) { %>
-                    <tr id="inv<%out.print(res.getString("delivery_id"));%>">
-                        <td><%out.print(res.getString("sku"));%></td>
-                        <td><%out.print(res.getString("name"));%></td>
-                        <td><%out.print(res.getString("delivery_to_name"));%></td>
-                        <td><%out.print(res.getString("delivery_address"));%></td>
-                        <td><% out.print(res.getString("perishable").equals("0") ? false : true);%></td>
-                        <td><% out.print(res.getString("expiry") == null ? "--No Expiry--" : res.getString("expiry"));%></td>
+                    <% for (int i = 0 ;i < res.size() ; i ++) { pending_for_agent item = res.get(i); %>
+                    <tr id="inv<%out.print(item.getDelivery_id());%>">
+                        <td><%out.print(item.getSku());%></td>
+                        <td><%out.print(item.getName());%></td>
+                        <td><%out.print(item.getDelivery_to_name());%></td>
+                        <td><%out.print(item.getDelivery_address());%></td>
+                        <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
+                        <td><% out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
                         <td>
-                            <button class="btn btn-primary" onclick='openDeliveryModal("<%out.print(res.getString("delivery_to_name"));%>", "<%out.print(res.getString("delivery_address"));%>","<%out.print(res.getString("delivery_id"));%>","<%out.print(res.getString("inventory_id"));%>")'>Deliver</button>
+                            <button class="btn btn-primary" onclick='openDeliveryModal("<%out.print(item.getDelivery_to_name());%>", "<%out.print(item.getDelivery_address());%>","<%out.print(item.getDelivery_id());%>","<%out.print(item.getInventory_id());%>")'>Deliver</button>
                         </td>
 
                     </tr>
@@ -132,8 +135,10 @@
         <script>
             
             var delivery_id_to_remove;
+            var inventory_id_to_remove;
             function openDeliveryModal(deliverTo, deliveryAddress,delivery_id,inventory_id) {
                 delivery_id_to_remove = delivery_id;
+                inventory_id_to_remove = inventory_id;
                 $('#deliveryModal').modal('show');
                 $('#deliverToName').val(deliverTo);
                 $('#deliveryAddress').val(deliveryAddress);
@@ -176,7 +181,7 @@
             $(document).ready(function () {
 
                 // Hide the recipientsignature 
-                $('#recipientSignature').hide();
+              
 
                 $('input[name="deliveryStatus"]').change(function (e) {
                     if (this.value == "DELIVERED") {

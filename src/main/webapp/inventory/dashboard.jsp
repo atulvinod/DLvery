@@ -1,4 +1,5 @@
 
+<%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 
 <%-- 
@@ -9,6 +10,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.mycompany.dlvery.datalayer.inventoryQueries" %>
+<%@page import="com.mycompany.dlvery.model.inventory_table"%>
 <jsp:useBean id="sql" class="com.mycompany.dlvery.datalayer.inventoryQueries"/>
 
 <!DOCTYPE html>
@@ -45,16 +47,16 @@
 
         <div class="container" id="tableContainer"> 
             <%
-                ResultSet allInventoryItems = sql.getAllInventory();
+                List<inventory_table> inventory = sql.getAllInventory();
 
-                if (allInventoryItems.next() == false) {
+                if (inventory.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">Inventory is empty</h4>
             </div>
             <%
             } else {
-                allInventoryItems.beforeFirst();
+
             %>
             <table  class="table">
                 <thead>
@@ -70,17 +72,18 @@
                     </tr>
                 </thead>
                 <tbody id="inventoryTable">
-                    
-                    <% while (allInventoryItems.next()) { %>
-                    <tr class="text-center" id="inv<% out.print(allInventoryItems.getString("inventory_id"));%>">
-                        <td><% out.print(allInventoryItems.getString("sku")); %></td>
-                        <td><% out.print(allInventoryItems.getString("name"));%></td>
-                        <td><% out.print(allInventoryItems.getString("move_in_date"));%></td>
-                        <td><% out.print(allInventoryItems.getString("perishable").equals("0") ? false : true);%></td>
-                        <td><% out.print(allInventoryItems.getString("expiry") == null ? "--No Expiry--" : allInventoryItems.getString("expiry"));%></td>
-                        <td><% out.print(allInventoryItems.getString("damaged").equals("0") ? false : true);%></td>
-                        <td><% out.print(allInventoryItems.getString("move_out_date"));%></td>
-                        <td> <a href="#" onclick="deleteInventory(<% out.print(allInventoryItems.getString("inventory_id")); %>)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+
+                    <% for (int i = 0; i < inventory.size(); i++) {
+                            inventory_table item = inventory.get(i);%>
+                    <tr class="text-center" id="inv<% out.print(item.getInventory_id());%>">
+                        <td><% out.print(item.getName()); %></td>
+                        <td><% out.print(item.getMove_in_date());%></td>
+                        <td><% out.print(item.getMove_out_date());%></td>
+                        <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
+                        <td><% out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
+                        <td><% out.print(item.getDamaged().equals("0") ? false : true);%></td>
+                        <td><% out.print(item.getMove_out_date());%></td>
+                        <td> <a href="#" onclick="deleteInventory(<% out.print(item.getInventory_id()); %>)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                     </tr> 
                     <% //while loop end 
                         }%>
@@ -91,7 +94,7 @@
             <%   }%>
         </div>
 
-   
+
 
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">

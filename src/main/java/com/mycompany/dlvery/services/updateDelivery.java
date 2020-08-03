@@ -79,7 +79,7 @@ public class updateDelivery extends HttpServlet {
             // Set updated values in the inventory
             inventoryQueries.setDeliveredInventory(inventory_id);
             response.setStatus(201);
-        }catch(SQLException e){
+        }catch(Exception e){
             e.printStackTrace();
             response.sendError(500, e.getMessage());
         }

@@ -22,7 +22,7 @@
     </servlet>
     <servlet>
         <servlet-name>assignDeliveryToAgent</servlet-name>
-        <servlet-class>assignDeliveryToAgent</servlet-class>
+        <servlet-class>com.mycompany.dlvery.services.assignDeliveryToAgent</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateDelivery</servlet-name>

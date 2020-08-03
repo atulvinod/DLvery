@@ -114,7 +114,7 @@ public class agentLogin extends HttpServlet {
     public void destroy() {
         super.destroy(); //To change body of generated methods, choose Tools | Templates.
         try{
-        authentication.closeConnection();
+      //  authentication.closeConnection();
         }catch(Exception e){
             e.printStackTrace();
         }

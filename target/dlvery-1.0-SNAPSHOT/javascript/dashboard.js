@@ -101,8 +101,7 @@ function updateAgent(id, status) {
             status
         },
         complete: function (data, textStatus, xhr) {
-            console.log(xhr.status);
-            $('.toast').toast('show')
+         
             $(`#${id}`).remove();
 
         }

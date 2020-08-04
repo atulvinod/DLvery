@@ -247,6 +247,7 @@ public class inventoryQueries implements Serializable {
                del.setExpiry(res.getString("expiry"));
                del.setDelivery_address(res.getString("delivery_address"));
                del.setDelivery_to_name(res.getString("delivery_to_name"));
+               list.add(del);
            }
         }catch(Exception e){
             e.printStackTrace();

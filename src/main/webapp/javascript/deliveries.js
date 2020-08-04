@@ -21,8 +21,9 @@ $('#assignDeliveryForm').submit(function(e){
             agent_id
         },
         success:function(){
-            $(`#inv${inventory_id}`).remove();
+            $("#inv"+inventory_id).remove();
             alert("Delivery has been assigned to the agent");
+            $('#assignModal').modal('hide');
         }
     })
 })

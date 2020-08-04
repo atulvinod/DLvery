@@ -28,6 +28,10 @@
         <servlet-name>updateDelivery</servlet-name>
         <servlet-class>com.mycompany.dlvery.services.updateDelivery</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getSignatureImage</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.getSignatureImage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>createNewInventoryItem</servlet-name>
         <url-pattern>/services/createNewInventoryItem</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>updateDelivery</servlet-name>
         <url-pattern>/agentServices/updateDelivery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getSignatureImage</servlet-name>
+        <url-pattern>/getSignatureImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

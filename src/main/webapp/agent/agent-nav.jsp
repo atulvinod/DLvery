@@ -16,10 +16,10 @@
          <div class="container subnav-top-margin subnav-border" >
         <ul class="nav nav-pills nav-fill">
             <li class="nav-item">
-                <a class="nav-link <%if(request.getRequestURI().contains("agentDashboard")){out.print("active");}%>" href="#">Pending Deliveries</a>
+                <a class="nav-link <%if(request.getRequestURI().contains("agentDashboard")){out.print("active");}%>" href="/agent/agentDashboard.jsp">Pending Deliveries</a>
             </li> 
              <li class="nav-item">
-                <a class="nav-link <%if(request.getRequestURI().contains("agentCompletedDashboard")){out.print("active");}%>" href="#">Completed Deliveries</a>
+                <a class="nav-link <%if(request.getRequestURI().contains("agentCompleted")){out.print("active");}%>" href="/agent/agentCompleted.jsp">Completed Deliveries</a>
             </li> 
         </ul>
          </div>

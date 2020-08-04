@@ -24,7 +24,6 @@
         <div class="container">
 
             <% List<pending_for_agent> res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
-
                 if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
@@ -214,7 +213,7 @@
                     ,
                     success: function (e) {
                         clearCanvas();
-                        $(`#inv${delivery_id_to_remove}`).remove();
+                        $("#inv"+delivery_id_to_remove).remove();
                         $('#deliveryModal').modal('hide');
 
                     }

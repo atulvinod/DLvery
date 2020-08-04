@@ -13,9 +13,17 @@ import java.io.Serializable;
  */
 public class delivery_table implements Serializable {
     int delivery_id,inventory_id,agent_id;
-    String status,reciever_name,delivery_date;
+    String status,reciever_name,delivery_date,sku;
 
     public delivery_table() {
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
     public int getDelivery_id() {

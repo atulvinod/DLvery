@@ -102,7 +102,7 @@ function updateAgent(id, status) {
         },
         complete: function (data, textStatus, xhr) {
          
-            $(`#${id}`).remove();
+            $("#"+id).remove();
 
         }
 

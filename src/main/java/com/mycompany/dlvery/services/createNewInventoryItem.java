@@ -19,38 +19,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class createNewInventoryItem extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     public void init()
             throws ServletException {
@@ -70,21 +45,23 @@ public class createNewInventoryItem extends HttpServlet {
         String perishable = request.getParameter("perishable");
         boolean perishableValue = perishable == null ? false : true;
         
-        String damaged = request.getParameter("damaged");
-        boolean damagedValue = damaged == null ? false : true;
-        
         String expiry = request.getParameter("expiryDate");
+        String category  =request.getParameter("category");
         try {
             
             response.setStatus(201);
-            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, moveInDate, moveOutDate, perishableValue, expiry, damagedValue, deliveryAddress,deliveryTo));
+            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, category,moveInDate, moveOutDate, perishableValue, expiry, deliveryAddress,deliveryTo));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Stack Trace ");
+            if(e.getMessage().contains("Duplicate entry")){
+                response.sendError(409);
+                
+            }else{
             response.setStatus(500);
+            }
         }
         
-        System.out.println(String.format("sku:%s moveInDate:%s moveOutDate:%s itemName:%s deliveryAddress:%s perishable:%s damaged:%s expiry:%s", sku, moveInDate, moveOutDate, itemName, deliveryAddress, perishable, damaged,expiry));
-    }
+     }
 
   
     

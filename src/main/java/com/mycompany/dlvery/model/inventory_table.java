@@ -14,7 +14,15 @@ import java.io.Serializable;
 public class inventory_table implements Serializable {
     
     int inventory_id;
-    String sku,name,move_in_date,move_out_date,perishable,expiry,damaged,delivery_address,delivery_status,delivery_to_name;
+    String sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public int getInventory_id() {
         return inventory_id;
@@ -72,13 +80,7 @@ public class inventory_table implements Serializable {
         this.expiry = expiry;
     }
 
-    public String getDamaged() {
-        return damaged;
-    }
-
-    public void setDamaged(String damaged) {
-        this.damaged = damaged;
-    }
+  
 
     public String getDelivery_address() {
         return delivery_address;

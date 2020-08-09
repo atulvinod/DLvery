@@ -13,7 +13,15 @@ import java.io.Serializable;
  */
 public class pending_for_agent implements Serializable {
     int inventory_id,agent_id,delivery_id;
-    String status,reciever_name,delivery_name,sku,name,move_in_date,move_out_date,perishable,expiry,damaged,delivery_address,delivery_status,delivery_to_name;
+    String status,reciever_name,delivery_name,sku,name,move_in_date,move_out_date,perishable,expiry,damaged,delivery_address,delivery_status,delivery_to_name,delivery_assigned_date;
+
+    public String getDelivery_assigned_date() {
+        return delivery_assigned_date;
+    }
+
+    public void setDelivery_assigned_date(String delivery_assigned_date) {
+        this.delivery_assigned_date = delivery_assigned_date;
+    }
 
     public pending_for_agent() {
     }

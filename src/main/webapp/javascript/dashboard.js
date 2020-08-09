@@ -6,6 +6,14 @@
 $(document).ready(function () {
     $('#expiryDateInput').hide();
 })
+
+var perishableCheck = false;
+
+$('#perishable').change(function (e) {
+    perishableCheck = $(this).prop("checked");
+})
+
+
 $('#newInventoryItemForm').submit(function (e) {
     e.preventDefault();
     let formdata = $('#newInventoryItemForm').serialize();
@@ -21,8 +29,6 @@ $('#newInventoryItemForm').submit(function (e) {
         alert("Move out date cannot be in the past");
         return;
     }
-
-
     $.ajax({
         url: "/services/createNewInventoryItem",
         type: 'POST',
@@ -35,19 +41,19 @@ $('#newInventoryItemForm').submit(function (e) {
             let itemName = $('#itemName').val();
             let deliveryAddress = $('#deliveryAddress').val();
 
-            let perishable = $('#perishable').val();
-            perishable = perishable == "on" ? true : false;
+            let perishable = perishableCheck;
 
             var expiryDate = $('#expiryDate').val();
             expiryDate = expiryDate.trim().length == 0 ? "--No Expiry--" : expiryDate;
 
-            var damaged = $('#damaged').val();
-            damaged = damaged == "on" ? true : false;
+          
+
+            let category = $('#category').val();
 
             // If no inventory banner is present, remove the banner
             if ($("#no-inventory").length) {
                 $("#no-inventory").remove();
-                let table = $('<table class="table"><thead><tr class="text-center"><th>SKU</th><th>Item Name</th><th>Move-In Date</th><th>Perishable</th><th>Expiry</th><th>Damaged</th><th>Expected Move out date</th><th>Actions</th></tr></thead> <tbody id="inventoryTable"></tbody></table>');
+                let table = $('<table class="table"><thead><tr class="text-center"><th>SKU</th><th>Item Name</th><th>Category</th><th>Move-In Date</th><th>Perishable</th><th>Expiry</th><th>Damaged</th><th>Expected Move out date</th><th>Actions</th></tr></thead> <tbody id="inventoryTable"></tbody></table>');
                 $("#tableContainer").append(table);
             }
 
@@ -55,19 +61,25 @@ $('#newInventoryItemForm').submit(function (e) {
             let newItem = $(` <tr class="text-center" id="inv${data}">
                     <td>${sku}</td>
                     <td>${itemName}</td>
+                    <td>${category}</td>
                     <td>${moveInDate}</td>
                     <td>${perishable}</td>
                     <td>${expiryDate}</td>
-                    <td>${damaged}</td>
+                   
                     <td>${moveOutDate}</td>
                     <td> <a href="#" onclick="deleteInventory(${data})"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr> `);
             $('#inventoryTable').append(newItem);
+            
             $('#exampleModal').modal('hide');
         },
-        complete: function (xhr, textStatus) {
-
-        }
+        error: function (xhr, textStatus) {
+            if(xhr.status == 409){
+                $('.invalid-feedback').css('display','block');
+                $('#skuInput').css("border","1px solid red");
+            }
+        },
+        
     })
 });
 
@@ -101,8 +113,8 @@ function updateAgent(id, status) {
             status
         },
         complete: function (data, textStatus, xhr) {
-         
-            $("#"+id).remove();
+
+            $("#" + id).remove();
 
         }
 

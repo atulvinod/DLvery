@@ -4,11 +4,11 @@
     Author     : atulv
     Description : To assign deliveries to agents in the database, checks for unassigned
 --%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.mycompany.dlvery.model.agent_details"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 
 <%@page import="com.mycompany.dlvery.datalayer.inventoryQueries" %>
@@ -32,13 +32,21 @@
             <%@include file="../subnav.jsp" %>
             <%@include file="delivery-nav.jsp" %>
         </div>
-        <div style="margin-top: 1rem" class="container">
-            <% List<inventory_table> getUndeliveredInventory = sql.getUnAssigned();
-                if (getUndeliveredInventory.size()== 0) {   %>
+        <div class="container">
+            <br>
+        <h5>Assign Deliveries to Agents</h5>
+        <br>
+        </div>
+        
+        <div  class="container">
             
+            
+            <% List<inventory_table> getUndeliveredInventory = sql.getUnAssigned();
+                if (getUndeliveredInventory.size() == 0) {   %>
+
 
             <%      } else {
-                %>
+            %>
             <table class="table">
                 <thead>
                     <tr>
@@ -53,7 +61,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%for (int i = 0 ; i< getUndeliveredInventory.size() ; i++) { inventory_table item = getUndeliveredInventory.get(i);%>
+                    <%for (int i = 0; i < getUndeliveredInventory.size(); i++) {
+                            inventory_table item = getUndeliveredInventory.get(i);%>
                     <tr id="inv<%out.print(item.getInventory_id());%>">
                         <td><%out.print(item.getInventory_id());%></td>
                         <td><%out.print(item.getSku());%></td>
@@ -61,7 +70,7 @@
                         <td><%out.print(item.getMove_in_date());%></td>
                         <td><%out.print(item.getMove_out_date());%></td>
                         <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
-                        <td><% out.print(item.getDamaged().equals("0") ? false : true);%></td>
+                        <td><%out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
 
                         <td><button class="btn btn-success" onclick="openAssignModal('<%out.print(item.getInventory_id());%>')">Assign</button> </td>
                     </tr>  
@@ -89,7 +98,8 @@
                     <div class="modal-body">
                         <form  id="assignDeliveryForm">
                             <% List<agent_details> authenticatedAgents = agentQ.getAllAgentDetails();
-                            for(int i = 0 ; i< authenticatedAgents.size() ; i ++) { agent_details detail = authenticatedAgents.get(i);
+                                for (int i = 0; i < authenticatedAgents.size(); i++) {
+                                    agent_details detail = authenticatedAgents.get(i);
                             %>
                             <div class="form-check" style="margin-bottom: 1.1rem">
                                 <input class="form-check-input" type="radio" name="agentRadio"  value="<%out.print(detail.getAgent_id());%>">
@@ -99,13 +109,13 @@
                             </div>
                             <% };%>
                             <div class="modal-footer">
-                            <input type="submit" value="save" class="btn btn-success">
+                                <input type="submit" value="save" class="btn btn-success">
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-                            <script src="/javascript/deliveries.js"></script>
+        <script src="/javascript/deliveries.js"></script>
     </body>
 </html>

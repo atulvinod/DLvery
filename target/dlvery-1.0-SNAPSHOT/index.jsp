@@ -35,7 +35,7 @@
 
                     </div>
                     <div class="text-center">
-                        <a href="/inventory/dashboard.jsp" class="btn btn-primary">Login to Inventory Management</a>
+                        <a href="/inventory/getInventoryDashboard" class="btn btn-primary">Login to Inventory Management</a>
                     </div> 
 
                 </div>    

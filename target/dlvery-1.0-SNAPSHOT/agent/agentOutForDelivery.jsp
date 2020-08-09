@@ -3,10 +3,10 @@
     Created on : 30-Jul-2020, 12:35:32 pm
     Author     : atulv
 --%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+
 <%@page import="com.mycompany.dlvery.datalayer.agentQueries" %>
 <%@page import="com.mycompany.dlvery.model.pending_for_agent" %>
 <jsp:useBean id="agentQ" class="com.mycompany.dlvery.datalayer.agentQueries"/>
@@ -22,8 +22,10 @@
         <%@include file="agent-nav.jsp" %>
         <br>
         <div class="container">
+            
+            
 
-            <% List<pending_for_agent> res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
+            <% List<pending_for_agent> res = agentQ.getOutForDeliveryForAgent(session.getAttribute("id").toString());
                 if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
@@ -31,7 +33,7 @@
             </div>
 
             <% } else {
-                 %>
+            %>
             <table class="table">
                 <thead>
                     <tr>
@@ -45,16 +47,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% for (int i = 0 ;i < res.size() ; i ++) { pending_for_agent item = res.get(i); %>
+                    <% for (int i = 0; i < res.size(); i++) {
+                            pending_for_agent item = res.get(i); %>
                     <tr id="inv<%out.print(item.getDelivery_id());%>">
                         <td><%out.print(item.getSku());%></td>
-                        <td><%out.print(item.getName());%></td>
+                        <td><%out.print(item.getDelivery_name());%></td>
                         <td><%out.print(item.getDelivery_to_name());%></td>
                         <td><%out.print(item.getDelivery_address());%></td>
                         <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
                         <td><% out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
                         <td>
-                            <button class="btn btn-primary" onclick='openDeliveryModal("<%out.print(item.getDelivery_to_name());%>", "<%out.print(item.getDelivery_address());%>","<%out.print(item.getDelivery_id());%>","<%out.print(item.getInventory_id());%>")'>Deliver</button>
+                            <button class="btn btn-primary" onclick='openDeliveryModal("<%out.print(item.getDelivery_to_name());%>", "<%out.print(item.getDelivery_address());%>", "<%out.print(item.getDelivery_id());%>", "<%out.print(item.getInventory_id());%>")'>Update Status</button>
                         </td>
 
                     </tr>
@@ -101,7 +104,7 @@
                             <div>
                                 <h5>Delivery Status</h5>
                                 <div class="form-check">
-                                    <input type="radio" name="deliveryStatus" value="DELIVERED" class="form-check-input" id="deliveredRadio" checked="true">
+                                    <input type="radio" name="deliveryStatus" value="DELIVERED" class="form-check-input" id="deliveredRadio">
                                     <label class="form-check-label" for="exampleCheck1">Delivered</label>
                                 </div> 
                                 <div id="recipientSignature">
@@ -111,12 +114,16 @@
                                     </canvas>
                                 </div>
                                 <div class="form-check">
-                                    <input type="radio" name="deliveryStatus" class="form-check-input" id="doorLockedRadio" value="DOOR_LOCKED">
+                                    <input type="radio" name="deliveryStatus" class="form-check-input" id="doorLockedRadio" value="DOOR_LOCK">
                                     <label class="form-check-label" for="exampleCheck1">Door Locked</label>
                                 </div>
                                 <div class="form-check">
-                                    <input type="radio" name="deliveryStatus" class="form-check-input" id="doorLockedRadio" value="RETURNED">
-                                    <label class="form-check-label" for="exampleCheck1">Return</label>
+                                    <input type="radio" name="deliveryStatus" class="form-check-input" id="transitDamagedRadio" value="TRANSIT_DAMAGED">
+                                    <label class="form-check-label" for="exampleCheck1">Transit Damaged</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" name="deliveryStatus" class="form-check-input" id="returnedRadio" value="RETURNED">
+                                    <label class="form-check-label" for="exampleCheck1">Returned</label>
                                 </div>
                             </div>
                             <hr>
@@ -132,10 +139,10 @@
         </div>
 
         <script>
-            
+
             var delivery_id_to_remove;
             var inventory_id_to_remove;
-            function openDeliveryModal(deliverTo, deliveryAddress,delivery_id,inventory_id) {
+            function openDeliveryModal(deliverTo, deliveryAddress, delivery_id, inventory_id) {
                 delivery_id_to_remove = delivery_id;
                 inventory_id_to_remove = inventory_id;
                 $('#deliveryModal').modal('show');
@@ -180,7 +187,7 @@
             $(document).ready(function () {
 
                 // Hide the recipientsignature 
-              
+
 
                 $('input[name="deliveryStatus"]').change(function (e) {
                     if (this.value == "DELIVERED") {
@@ -194,30 +201,47 @@
             $('#deliveryForm').submit(function (e) {
                 e.preventDefault();
                 let recipientName = $('#deliverToName').val();
-                let status = $('input[name="deliveryStatus"]').val();
+                let status = $('input[name="deliveryStatus"]:checked').val();
                 let signatureData = null;
                 if (status == "DELIVERED") {
                     let canvas = document.getElementById('signature');
-                    signatureData = canvas.toDataURL().replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");;
-                }
-                $.ajax({
-                    url: "/agentServices/updateDelivery",
-                    type: 'POST',
-                    data: {
-                        recipientName,
-                        status,
-                        signatureData,
-                        deliveryId : delivery_id_to_remove,
-                        inventory_id : inventory_id_to_remove
-                    }
-                    ,
-                    success: function (e) {
-                        clearCanvas();
-                        $("#inv"+delivery_id_to_remove).remove();
-                        $('#deliveryModal').modal('hide');
+                    signatureData = canvas.toDataURL().replace(/^data:image\/(png|jpg|jpeg|gif);base64,/, "");
 
-                    }
-                })
+                    $.ajax({
+                        url: "/agentServices/setDeliveredDetails",
+                        type: 'POST',
+                        data: {
+                            recipientName,
+                            status,
+                            signatureData,
+                            deliveryId: delivery_id_to_remove,
+                            inventory_id: inventory_id_to_remove
+                        }
+                        ,
+                        success: function (e) {
+                            clearCanvas();
+                            $("#inv" + delivery_id_to_remove).remove();
+                            $('#deliveryModal').modal('hide');
+
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        url: "/agentServices/setDeliveryStatus",
+                        type: 'POST',
+                        data: {
+                            delivery_id :delivery_id_to_remove,
+                            delivery_status: status
+                        },
+                        success: function (e) {
+                            clearCanvas();
+                            $("#inv" + delivery_id_to_remove).remove();
+                            $('#deliveryModal').modal('hide');
+
+                        }
+                    })
+                }
+
             })
 
             function clearCanvas() {

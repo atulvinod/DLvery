@@ -56,7 +56,7 @@
         <script>
             function onSignIn(googleUser) {
                 var profile = googleUser.getBasicProfile();
-                var redirectURL = '/agentServices/agentLogin'
+                var redirectURL = '/agentServices/getAgentDashboard'
 
                 console.log('ID: ' + profile.getId());
                 console.log('Name: ' + profile.getName());

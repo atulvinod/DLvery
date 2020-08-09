@@ -16,18 +16,20 @@
     </head>
     <body>
         <ul class="nav nav-tabs container" style="margin-top:2rem">
-  <li class="nav-item">
-      <a class="nav-link <% if(request.getRequestURI().contains("deliveries.jsp")){out.print("active");}%>" href="/inventory/delivery/deliveries.jsp">Assign Deliveries</a>
-  </li>
-  <li class="nav-item">
-      <a class="nav-link <% if(request.getRequestURI().contains("status.jsp")){out.print("active");}%>" href="/inventory/delivery/status.jsp">Delivery Status</a>
-  </li>
-  <li class="nav-item">
-      <a class="nav-link <% if(request.getRequestURI().contains("history.jsp")){out.print("active");}%>" href="/inventory/delivery/history.jsp">Delivery History</a>
-  </li>
- 
-</ul>
-          <script src="../../javascript/deliveries.js"></script>
+            <li class="nav-item">
+                <a class="nav-link <% if (request.getRequestURI().contains("deliveries.jsp")) {
+              out.print("active");
+          }%>" href="/inventory/delivery/deliveries.jsp">Assign Deliveries</a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link <% if (request.getRequestURI().contains("history.jsp")) {
+              out.print("active");
+          }%>" href="/inventory/delivery/history.jsp">Delivery History</a>
+            </li>
+
+        </ul>
+        <script src="../../javascript/deliveries.js"></script>
 
     </body>
 </html>

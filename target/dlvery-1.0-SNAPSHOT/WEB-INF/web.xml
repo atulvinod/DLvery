@@ -13,8 +13,8 @@
         <servlet-class>com.mycompany.dlvery.services.sessionInvalidate</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>agentLogin</servlet-name>
-        <servlet-class>com.mycompany.dlvery.services.agentLogin</servlet-class>
+        <servlet-name>getAgentDashboard</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.getAgentDashboard</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateAgentStatus</servlet-name>
@@ -25,13 +25,47 @@
         <servlet-class>com.mycompany.dlvery.services.assignDeliveryToAgent</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>updateDelivery</servlet-name>
-        <servlet-class>com.mycompany.dlvery.services.updateDelivery</servlet-class>
+        <servlet-name>setDeliveredDetails</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.setDeliveredDetails</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getSignatureImage</servlet-name>
         <servlet-class>com.mycompany.dlvery.services.getSignatureImage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getInventoryDashboard</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.getInventoryDashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>uploadInventoryFile</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.uploadInventoryFile</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setDeliveryStatus</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.setDeliveryStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getDeliveredInRangeReport</servlet-name>
+        <servlet-class>com.mycompany.dlvery.services.getDeliveredInRangeReport</servlet-class>
+    </servlet>
+    
+    
+    <serlvet-mapping>
+        <servlet-name>
+            setDeliveredDetails
+        </servlet-name>
+        <url-pattern>
+            /agentServices/setDeliveredDetails
+        </url-pattern>
+    </serlvet-mapping>
+    <servlet-mapping>
+        <servlet-name>
+            setDeliveryStatus
+        </servlet-name>
+        <url-pattern>
+            /agentServices/setDeliveryStatus
+        </url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>createNewInventoryItem</servlet-name>
         <url-pattern>/services/createNewInventoryItem</url-pattern>
@@ -44,10 +78,7 @@
         <servlet-name>sessionInvalidate</servlet-name>
         <url-pattern>/services/sessionInvalidate</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>agentLogin</servlet-name>
-        <url-pattern>/agentServices/agentLogin</url-pattern>
-    </servlet-mapping>
+   
     <servlet-mapping>
         <servlet-name>updateAgentStatus</servlet-name>
         <url-pattern>/services/updateAgentStatus</url-pattern>
@@ -56,13 +87,27 @@
         <servlet-name>assignDeliveryToAgent</servlet-name>
         <url-pattern>/services/assignDeliveryToAgent</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>updateDelivery</servlet-name>
-        <url-pattern>/agentServices/updateDelivery</url-pattern>
-    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>getSignatureImage</servlet-name>
         <url-pattern>/getSignatureImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getInventoryDashboard</servlet-name>
+        <url-pattern>/inventory/getInventoryDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>uploadInventoryFile</servlet-name>
+        <url-pattern>/inventory/uploadInventoryFile</url-pattern>
+    </servlet-mapping>
+ 
+    <servlet-mapping>
+        <servlet-name>getDeliveredInRangeReport</servlet-name>
+        <url-pattern>/inventory/reports/getDeliveredInRangeReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getAgentDashboard</servlet-name>
+        <url-pattern>/agentServices/getAgentDashboard</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

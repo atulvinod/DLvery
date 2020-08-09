@@ -63,7 +63,7 @@ public class sessionInvalidate extends HttpServlet {
         }
         request.getSession().invalidate();
         
-        response.sendRedirect("/");
+      request.getServletContext().getRequestDispatcher("index.jsp").forward(request, response);
         
     }
 

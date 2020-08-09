@@ -5,11 +5,14 @@
  */
 package com.mycompany.dlvery.datalayer;
 
+import com.mycompany.dlvery.model.agent_details;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 import javax.sql.DataSource;
 
 /**
@@ -38,6 +41,7 @@ public class agentAuthenticationQueries implements Serializable {
             statement.setString(1, auth_id);
 
             x = statement.executeQuery().next();
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -53,11 +57,10 @@ public class agentAuthenticationQueries implements Serializable {
             PreparedStatement statement = connection.prepareStatement("SELECT auth_status FROM agent_details where agent_auth_id = ?");
             statement.setString(1, auth_id);
             ResultSet s = statement.executeQuery();
-
-            connection.close();
             while (s.next()) {
                 result = s.getInt(1);
             }
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -75,6 +78,7 @@ public class agentAuthenticationQueries implements Serializable {
             statement.setString(3, auth_id);
 
             statement.execute();
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,26 +91,37 @@ public class agentAuthenticationQueries implements Serializable {
             PreparedStatement statement = connection.prepareStatement("UPDATE agent_details SET auth_status = true WHERE agent_auth_id = ?");
             statement.setString(1, auth_id);
             statement.execute();
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ResultSet getPendingAgentAuths() {
-        ResultSet s = null;
+    public static List<agent_details> getPendingAgentAuths() {
+        List<agent_details> list = new LinkedList<>();
         try (Connection connection = dataSource.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM agent_details WHERE auth_status = false");
-            s = statement.executeQuery();
-
+            ResultSet x = statement.executeQuery();
+            while(x.next()){
+                agent_details item = new agent_details();
+                item.setAgent_id(x.getInt("agent_id"));
+                item.setAgent_name(x.getString("agent_name"));
+                item.setAgent_email(x.getString("agent_email"));
+                item.setAgent_auth_id(x.getString("agent_auth_id"));
+                item.setAgent_auth_id(x.getString("auth_status"));
+                list.add(item);
+            }
+            
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            return s;
+            return list;
         }
     }
 
-    public static int getAgentID(String id) throws SQLException {
+    public static int getAgentID(String id) {
         int agent_id = 0;
 
         try (Connection connection = dataSource.getConnection()) {
@@ -118,6 +133,7 @@ public class agentAuthenticationQueries implements Serializable {
             while (rs.next()) {
                 agent_id = rs.getInt("agent_id");
             }
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

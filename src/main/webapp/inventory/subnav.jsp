@@ -4,6 +4,8 @@
     Author     : atulv
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="com.mycompany.dlvery.model.agent_details"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="com.mycompany.dlvery.datalayer.agentAuthenticationQueries"%>
 <jsp:useBean id="agent" class="com.mycompany.dlvery.datalayer.agentAuthenticationQueries"/>
@@ -23,11 +25,11 @@
                 <a class="nav-item nav-link 
                    <% if (request.getRequestURI().contains("reports")) {
                            out.print("active");
-                       }%>" href="/inventory/reports/reports.jsp">Reports</a>
+                       }%>" href="/inventory/reports/getDeliveredInRangeReport">Reports</a>
                 <a class="nav-item nav-link <% if (request.getRequestURI().contains("dashboard")) {
                     out.print("active");
                 }%>" href="/inventory/dashboard.jsp">Current Inventory</a>
-                <a class="nav-item nav-link <% if (request.getRequestURI().contains("delivery")) {
+                <a class="nav-item nav-link <% if (request.getRequestURI().contains("delivery/deliveries") || request.getRequestURI().contains("history")) {
                     out.print("active");
                 }%>" href="/inventory/delivery/deliveries.jsp">Deliveries</a>
 
@@ -47,7 +49,7 @@
                     </div>
                     <div class="modal-body">
                         <%
-                            ResultSet agentAuth = agent.getPendingAgentAuths();
+                            List<agent_details> agentAuth = agent.getPendingAgentAuths();
 
                         %>
                         <table class="table">    
@@ -59,12 +61,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%while (agentAuth.next()) {
+                                <%for(int i = 0 ; i< agentAuth.size() ; i++) { agent_details item = agentAuth.get(i);
                                 %>
-                                <tr id="<%out.print(agentAuth.getString("agent_auth_id"));%>">
-                                    <td><%out.print(agentAuth.getString("agent_name"));%></td>
-                                    <td><%out.print(agentAuth.getString("agent_email"));%></td>
-                                    <td><button class="btn btn-success" onclick="updateAgent('<% out.print(agentAuth.getString("agent_auth_id"));%>', true)">Accept</button>&nbsp;<button class="btn btn-danger" onclick="updateAgent('<% out.print(agentAuth.getString("agent_auth_id"));%>', false)">Reject</button></td>
+                                <tr id="<%out.print(item.getAgent_auth_id());%>">
+                                    <td><%out.print(item.getAgent_name());%></td>
+                                    <td><%out.print(item.getAgent_email());%></td>
+                                    <td><button class="btn btn-success" onclick="updateAgent('<% out.print(item.getAgent_auth_id());%>', true)">Accept</button>&nbsp;<button class="btn btn-danger" onclick="updateAgent('<% out.print(item.getAgent_auth_id());%>', false)">Reject</button></td>
                                 </tr>
 
 

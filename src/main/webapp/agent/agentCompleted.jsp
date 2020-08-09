@@ -64,54 +64,9 @@
 
 
         </div>
-        <div class="modal" tabindex="-1" role="dialog" id="ackModal" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Acknowledgement</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name" >Reciever name</label>
-                            <input type="text" name="reciever" id="recieverName" class="form-control">
-                        </div>
-                        <div id="ackImageDiv">
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" onclick="closeAck()">Close</button>
-                    </div>
-                </div>
-
-
-            </div>
-
-
-        </div>
+        
+                <%@include file="/utility/showSignature.jsp" %>
 
     </body>
-    <script>
-        function closeAck() {
-            $("#ackImageDiv").empty();
-            $('#ackModal').modal('hide');
-
-        }
-        function showAckModal(delivery_id, reciever_name) {
-            $('#recieverName').val(reciever_name);
-            $('#ackModal').modal('show');
-            $.ajax({
-                url: "/getSignatureImage",
-                type: 'POST',
-                data: {
-                    delivery_id
-                }
-                , success: function (e) {
-                    let image = $('<img src="data:image/jpeg;base64,' + e + '" width="400" height="200"></img>');
-                    $('#ackImageDiv').append(image);
-
-                }
-            })
-        }
-    </script>
+   
 </html>

@@ -31,7 +31,11 @@
                                 <div class="col-md-10">
                                     <input type="text" name="sku" id="skuInput" class="form-control" required="true">
                                     <small id="skuHelp" class="form-text text-muted">SKU is a unique identifier used to keep track of objects</small>                                
-                                </div>  
+                                    <div class="invalid-feedback">
+                                        SKU is invalid
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6 ">
@@ -49,6 +53,19 @@
 
                                 <label for="itemName">Item Name</label>
                                 <input type="text" name="itemName" id="itemName" class="form-control" required="true">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <label class="input-group-text" for="inputGroupSelect01">Category</label>
+                                </div>
+                                <select class="custom-select" id="category" name="category">
+                                    <option selected value="clothing">Clothing</option>
+                                    <option value ="food">Food</option>
+                                    <option value="medical">Medical</option>
+                                    <option value="toys">Toys</option>
+                                    <option value="electronics">Electronics</option>
+
+                                </select>
                             </div>
                             <div class="form-group">
 
@@ -73,12 +90,7 @@
                                 </label>
                                 <input type="date" name="expiryDate" id="expiryDate" class="form-control" >
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox"  id="damaged" name="damaged" unchecked>
-                                <label class="form-check-label" for="damaged">
-                                    Damaged
-                                </label>
-                            </div>
+                          
                             <hr>
                             <input type="submit" value="Submit" class="btn btn-success">
 
@@ -93,5 +105,5 @@
         </div>
 
     </body>
- 
+
 </html>

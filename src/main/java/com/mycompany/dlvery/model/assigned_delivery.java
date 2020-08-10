@@ -8,12 +8,29 @@ package com.mycompany.dlvery.model;
 import java.io.Serializable;
 
 /**
+ * Defines the assigned delivery details which are relevant when the delivery process takes place
  *
  * @author atulv
  */
 public class assigned_delivery implements Serializable{
     int delivery_id,inventory_id,agent_id;
-    String status,reciever_name,delivery_date,agent_name,agent_auth_id,auth_status,sku,name,move_in_date,move_out_date,perishable,expiry,damaged,delivery_address,delivery_to_name;
+    String status,reciever_name,delivery_date,agent_name,agent_auth_id,auth_status,sku,name,move_in_date,move_out_date,perishable,expiry,damaged,delivery_address,delivery_to_name,delivery_from,delivery_to_contact;
+
+    public String getDelivery_from() {
+        return delivery_from;
+    }
+
+    public void setDelivery_from(String delivery_from) {
+        this.delivery_from = delivery_from;
+    }
+
+    public String getDelivery_to_contact() {
+        return delivery_to_contact;
+    }
+
+    public void setDelivery_to_contact(String delivery_to_contact) {
+        this.delivery_to_contact = delivery_to_contact;
+    }
     public assigned_delivery(){
         
     }

@@ -47,10 +47,13 @@ public class createNewInventoryItem extends HttpServlet {
         
         String expiry = request.getParameter("expiryDate");
         String category  =request.getParameter("category");
+        
+        String deliveryToContact = request.getParameter("deliveryToContactNumber");
+        String deliveryFromAddress = request.getParameter("deliveryFromAddress");
         try {
             
             response.setStatus(201);
-            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, category,moveInDate, moveOutDate, perishableValue, expiry, deliveryAddress,deliveryTo));
+            response.getOutputStream().print(inventoryQueries.createNewInventoryItem(sku, itemName, category,moveInDate, moveOutDate, perishableValue, expiry, deliveryAddress,deliveryTo,deliveryToContact,deliveryFromAddress));
         } catch (Exception e) {
             System.out.println("Stack Trace ");
             if(e.getMessage().contains("Duplicate entry")){

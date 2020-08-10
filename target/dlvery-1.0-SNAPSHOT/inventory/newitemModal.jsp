@@ -67,13 +67,23 @@
 
                                 </select>
                             </div>
-                            <div class="form-group">
-
-                                <label for="deliveryTo">Delivery To</label>
-                                <input type="text" name="deliveryTo" id="deliveryTo" class="form-control" required="true">
+                             <div class="form-group">
+                                <label for="deliveryFromAddress">Delivery From Address</label>
+                                <textarea class="form-control" id="deliveryFromAddress" rows="3" required="true" name="deliveryFromAddress"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="deliveryAddress">Delivery Address</label>
+
+                                <label for="deliveryTo">Recipient Name</label>
+                                <input type="text" name="deliveryTo" id="deliveryTo" class="form-control" required="true">
+                            </div>
+                              <div class="form-group">
+
+                                <label for="deliveryTo">Contact Number</label>
+                                <input type="text" name="deliveryToContactNumber" id="deliveryToContactNumber" class="form-control" required="true">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="deliveryAddress">Deliver to Address</label>
                                 <textarea class="form-control" id="deliveryAddress" rows="3" required="true" name="deliveryAddress"></textarea>
                             </div>
                             <hr>

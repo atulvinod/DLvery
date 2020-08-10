@@ -224,8 +224,8 @@
                         <th>Move-In Date</th>
                         <th>Perishable</th>
                         <th>Expiry</th>
-
-                        <th>Expected Move out date</th>
+                        <th>Deliver To</th>
+                        <th>Expected Delivery Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -241,7 +241,7 @@
 
                         <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
                         <td><% out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
-
+                        <td><%=  item.getDelivery_address()%></td>
                         <td><% out.print(item.getMove_out_date());%></td>
                         <td> <a href="#" onclick="deleteInventory(<% out.print(item.getInventory_id()); %>)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                     </tr> 

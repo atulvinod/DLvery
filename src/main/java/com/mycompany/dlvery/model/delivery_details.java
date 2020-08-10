@@ -8,12 +8,28 @@ package com.mycompany.dlvery.model;
 import java.io.Serializable;
 
 /**
- *
+ * Defines the model of all the details of a particular delivery and is a join of the delivery table and the inventory table
  * @author atulv
  */
 public class delivery_details  implements Serializable {
     int inventory_id,delivery_id,agent_id;
-    String sku,name,move_in_date,move_out_date,persiable,expiry,damaged,delivery_address,delivery_status,delivery_to_name,status,reciever_name,reciever_signature,delivery_date;
+    String sku,name,move_in_date,move_out_date,persiable,expiry,damaged,delivery_address,delivery_status,delivery_to_name,status,reciever_name,reciever_signature,delivery_date,delivery_to_contact, delivery_from;
+
+    public String getDelivery_to_contact() {
+        return delivery_to_contact;
+    }
+
+    public void setDelivery_to_contact(String delivery_to_contact) {
+        this.delivery_to_contact = delivery_to_contact;
+    }
+
+    public String getDelivery_from() {
+        return delivery_from;
+    }
+
+    public void setDelivery_from(String delivery_from) {
+        this.delivery_from = delivery_from;
+    }
     public delivery_details(){
         
     }

@@ -17,6 +17,14 @@ $('#perishable').change(function (e) {
 $('#newInventoryItemForm').submit(function (e) {
     e.preventDefault();
     let formdata = $('#newInventoryItemForm').serialize();
+    let deliveryToContact = $('#deliveryToContactNumber').val();
+    
+    if(deliveryToContact.length != 10){
+        $('#deliveryToContactNumber').focus();
+        alert("Phone number is not valid");
+        return;
+    }
+    
     console.log(formdata);
     var moveInDate = $('#moveInDate').val();
     var moveOutDate = $('#moveOutDate').val();
@@ -29,6 +37,8 @@ $('#newInventoryItemForm').submit(function (e) {
         alert("Move out date cannot be in the past");
         return;
     }
+    
+    
     $.ajax({
         url: "/services/createNewInventoryItem",
         type: 'POST',
@@ -45,9 +55,7 @@ $('#newInventoryItemForm').submit(function (e) {
 
             var expiryDate = $('#expiryDate').val();
             expiryDate = expiryDate.trim().length == 0 ? "--No Expiry--" : expiryDate;
-
-          
-
+            let delivery_to = $('#deliveryAddress').val()
             let category = $('#category').val();
 
             // If no inventory banner is present, remove the banner
@@ -57,7 +65,7 @@ $('#newInventoryItemForm').submit(function (e) {
                 $("#tableContainer").append(table);
             }
 
-            console.log(sku, moveInDate, moveOutDate, itemName, deliveryAddress, perishable, expiryDate, damaged);
+
             let newItem = $(` <tr class="text-center" id="inv${data}">
                     <td>${sku}</td>
                     <td>${itemName}</td>
@@ -65,7 +73,7 @@ $('#newInventoryItemForm').submit(function (e) {
                     <td>${moveInDate}</td>
                     <td>${perishable}</td>
                     <td>${expiryDate}</td>
-                   
+                    <td>${delivery_to}</td>
                     <td>${moveOutDate}</td>
                     <td> <a href="#" onclick="deleteInventory(${data})"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr> `);

@@ -129,10 +129,12 @@ public class getInventoryDashboard extends HttpServlet {
                   
                     String moveOutDate = (String) object.get("moveOutDate");
                     String moveInDate = (String) object.get("moveInDate");
-                    String delivery_address = (String) object.get("deliveryAddress");
-                    String delivery_to_name = (String) object.get("deliveryToName");
+                    String deliveryAddress = (String) object.get("deliveryAddress");
+                    String deliveryToName = (String) object.get("deliveryToName");
+                    String deliveryToContactNumber = (String)object.get("deliveryToContactNumber");
+                    String deliveryFromAddress = (String)object.get("deliveryToAddress");
 
-                    inventoryQueries.createNewInventoryItem(sku, name, category, moveInDate, moveOutDate, perishable, expiry, delivery_address, delivery_to_name);
+                    inventoryQueries.createNewInventoryItem(sku, name, category, moveInDate, moveOutDate, perishable, expiry, deliveryAddress, deliveryToName,deliveryToContactNumber,deliveryFromAddress);
                 } catch (Exception e) {
                     e.printStackTrace();
                     exceptionsList.add(e);

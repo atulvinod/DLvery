@@ -14,7 +14,23 @@ import java.io.Serializable;
 public class inventory_table implements Serializable {
     
     int inventory_id;
-    String sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,category;
+    String sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,category,delivery_to_contact,delivery_from;
+
+    public String getDelivery_to_contact() {
+        return delivery_to_contact;
+    }
+
+    public void setDelivery_to_contact(String delivery_to_contact) {
+        this.delivery_to_contact = delivery_to_contact;
+    }
+
+    public String getDelivery_from() {
+        return delivery_from;
+    }
+
+    public void setDelivery_from(String delivery_from) {
+        this.delivery_from = delivery_from;
+    }
 
     public String getCategory() {
         return category;

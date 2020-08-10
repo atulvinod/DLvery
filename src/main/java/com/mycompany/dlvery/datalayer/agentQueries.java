@@ -104,7 +104,7 @@ public class agentQueries implements Serializable {
         List<pending_for_agent> list = new LinkedList<>();
         Connection connection = dataSource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND dt.status = \"PENDING\"", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,delivery_from,delivery_to_contact FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND dt.status = \"PENDING\"", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setString(1, agent_id);
         ResultSet x = statement.executeQuery();
         while (x.next()) {
@@ -120,7 +120,7 @@ public class agentQueries implements Serializable {
         List<pending_for_agent> list = new LinkedList<>();
         Connection connection = dataSource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND dt.status = \"OUT_FOR_DELIVERY\"", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,delivery_from,delivery_to_contact FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND dt.status = \"OUT_FOR_DELIVERY\"", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setString(1, agent_id);
         ResultSet x = statement.executeQuery();
         while (x.next()) {
@@ -136,7 +136,7 @@ public class agentQueries implements Serializable {
         List<pending_for_agent> list = new LinkedList<>();
         Connection connection = dataSource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) = DATE(NOW());", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id,delivery_assigned_date, dt.delivery_id, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,delivery_from,delivery_to_contact FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) = DATE(NOW());", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setString(1, agent_id);
         ResultSet x = statement.executeQuery();
         while (x.next()) {
@@ -152,7 +152,7 @@ public class agentQueries implements Serializable {
         List<pending_for_agent> list = new LinkedList<>();
         Connection connection = dataSource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id, dt.delivery_id,delivery_assigned_date, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) < DATE(NOW());", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id, dt.delivery_id,delivery_assigned_date, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,delivery_from,delivery_to_contact FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) < DATE(NOW()) ORDER BY ABS(DATEDIFF(move_out_date, NOW())) DESC;", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setString(1, agent_id);
         ResultSet x = statement.executeQuery();
         while (x.next()) {
@@ -168,7 +168,7 @@ public class agentQueries implements Serializable {
         List<pending_for_agent> list = new LinkedList<>();
         Connection connection = dataSource.getConnection();
 
-        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id, dt.delivery_id,delivery_assigned_date, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) > DATE(NOW());", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement statement = connection.prepareStatement("SELECT dt.inventory_id, dt.delivery_id,delivery_assigned_date, agent_id,status,reciever_name,delivery_date,sku,name,move_in_date,move_out_date,perishable,expiry,delivery_address,delivery_status,delivery_to_name,delivery_from,delivery_to_contact FROM delivery_table dt INNER JOIN inventory_table it ON dt.inventory_id = it.inventory_id WHERE dt.agent_id = ? AND (dt.status = \"PENDING\" OR dt.status = \"DOOR_LOCK\" ) AND DATE(move_out_date) > DATE(NOW()) ORDER BY ABS(DATEDIFF(move_out_date, NOW()));", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         statement.setString(1, agent_id);
         ResultSet x = statement.executeQuery();
         while (x.next()) {
@@ -275,6 +275,8 @@ public class agentQueries implements Serializable {
         item.setDelivery_to_name(x.getString("delivery_to_name"));
         item.setDelivery_id(x.getInt("delivery_id"));
         item.setSku(x.getString("sku"));
+        item.setDelivery_to_contact(x.getString("delivery_to_contact"));
+        item.setDelivery_from(x.getString("delivery_from"));
         return item;
     }
 

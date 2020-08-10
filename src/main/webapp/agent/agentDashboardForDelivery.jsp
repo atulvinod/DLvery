@@ -97,6 +97,7 @@
                         <th>Item Name</th>
                         <th>Deliver To Name</th>
                         <th>Delivery Address</th>
+                        <th>Contact Number</th>
                         <th>Perishable</th>
                         <th>Expiry Date</th>
                         <th>Actions</th>
@@ -110,6 +111,7 @@
                         <td><%out.print(item.getDelivery_name());%></td>
                         <td><%out.print(item.getDelivery_to_name());%></td>
                         <td><%out.print(item.getDelivery_address());%></td>
+                        <td><%= item.getDelivery_to_contact() %></td>
                         <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>
                         <td><% out.print(item.getExpiry() == null ? "--No Expiry--" : item.getExpiry());%></td>
                         <td>

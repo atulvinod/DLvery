@@ -56,8 +56,10 @@
                         <th>Inventory ID</th>
                         <th>SKU</th>
                         <th>Name</th>
+                        <th>Delivery From</th>
+                        <th>Delivery To Address</th>
                         <th>Move-In Date</th>
-                        <th>Move-out Date</th>
+                        <th>Move-out Date/Deliver By</th>
                         <th>Perishable</th>
                         <th>Expiry</th>
                         <th>Actions</th>
@@ -70,6 +72,8 @@
                         <td><%out.print(item.getInventory_id());%></td>
                         <td><%out.print(item.getSku());%></td>
                         <td><%out.print(item.getName());%></td>
+                        <td><%= item.getDelivery_from()%></td>
+                        <td><%= item.getDelivery_address() %></td>
                         <td><%out.print(item.getMove_in_date());%></td>
                         <td><%out.print(item.getMove_out_date());%></td>
                         <td><% out.print(item.getPerishable().equals("0") ? false : true);%></td>

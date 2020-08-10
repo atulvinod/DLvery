@@ -21,7 +21,8 @@ public class connectionPool {
         if (dataSource == null) {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl("jdbc:mysql://us-cdbr-iron-east-05.cleardb.net/heroku_11c9248fe100c56");
-            config.setUsername("bd23c203bf2c25");
+           config.setUsername("bd23c203bf2c25");
+            //config.setUsername("bd23c203bf2c26");
             config.setPassword("a85a1c3c");
             config.setDriverClassName("com.mysql.jdbc.Driver");
             config.setMaximumPoolSize(10);

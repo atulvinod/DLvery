@@ -9,7 +9,7 @@
     Author     : atulv
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <%@page import="com.mycompany.dlvery.datalayer.inventoryQueries" %>
 <%@page import="com.mycompany.dlvery.model.inventory_table"%>
 <jsp:useBean id="sql" class="com.mycompany.dlvery.datalayer.inventoryQueries"/>
@@ -65,8 +65,8 @@
                 <%
                     } %>
                 <<button onclick="function () {
-                                 $('#infoRow').remove()
-                             }" class="btn btn-primary btn-sm">Clear All</button>
+                            $('#infoRow').remove()
+                        }" class="btn btn-primary btn-sm">Clear All</button>
                 <hr class="col-md-12">
                 <%}
                 %>
@@ -175,38 +175,38 @@
 
         <div class="container" id="tableContainer"> 
             <%
+                try {
+                    if (stateFilter.equals("damaged")) {
+                        //out.print("All Acc To damaged true");
 
-                if (stateFilter.equals("damaged")) {
-                    //out.print("All Acc To damaged true");
+                        inventory = sql.getAccToCategoryAndDamagedStatus(categoryFilter, true);
+                    } else if (stateFilter.equals("non_damaged")) {
+                        //out.print("All Acc To damaged false");
 
-                    inventory = sql.getAccToCategoryAndDamagedStatus(categoryFilter, true);
-                } else if (stateFilter.equals("non_damaged")) {
-                    //out.print("All Acc To damaged false");
+                        inventory = sql.getAccToCategoryAndDamagedStatus(categoryFilter, false);
+                    } else if (stateFilter.equals("perishable")) {
+                        inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, true);
+                        // out.print("All Acc To perishble false");
 
-                    inventory = sql.getAccToCategoryAndDamagedStatus(categoryFilter, false);
-                } else if (stateFilter.equals("perishable")) {
-                    inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, true);
-                    // out.print("All Acc To perishble false");
+                    } else if (stateFilter.equals("non_perishable")) {
+                        inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, false);
+                    } else if (stateFilter.equals("perishable")) {
+                        // out.print("All Acc To perishable true");
 
-                } else if (stateFilter.equals("non_perishable")) {
-                    inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, false);
-                } else if (stateFilter.equals("perishable")) {
-                    // out.print("All Acc To perishable true");
+                        inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, true);
 
-                    inventory = sql.getAccToCategoryAndPerishableStatus(categoryFilter, true);
+                    } else if (stateFilter.equals("near_expiry")) {
+                        //   out.print("All Acc To near expiry");
 
-                } else if (stateFilter.equals("near_expiry")) {
-                    //   out.print("All Acc To near expiry");
+                        inventory = sql.getAccToCategoryAndNearExpiry(categoryFilter);
 
-                    inventory = sql.getAccToCategoryAndNearExpiry(categoryFilter);
+                    } else {
+                        //  out.print("All Acc To category");
+                        inventory = sql.getAllInventoryAccToCategory(categoryFilter);
 
-                } else {
-                    //  out.print("All Acc To category");
-                    inventory = sql.getAllInventoryAccToCategory(categoryFilter);
+                    }
 
-                }
-
-                if (inventory.size() == 0) {
+                    if (inventory.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">Inventory is empty</h4>
@@ -252,6 +252,11 @@
             </table>
 
             <%  //Closing all inventory tag 
+                    }
+
+                } catch (Exception e) {
+                    request.setAttribute("ExceptionObject", e);
+                    request.getServletContext().getRequestDispatcher("errorPage.jsp");
                 }%>
 
 

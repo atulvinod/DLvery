@@ -74,6 +74,7 @@ public class setDeliveredDetails extends HttpServlet {
         }catch(Exception e){
             e.printStackTrace();
             response.sendError(500, e.getMessage());
+            
         }
     }
 

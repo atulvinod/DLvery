@@ -3,7 +3,8 @@
     Created on : 30-Jul-2020, 12:35:32 pm
     Author     : atulv
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+<%@page import="java.sql.SQLException"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true" errorPage="/errorPage.jsp"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 
@@ -22,11 +23,13 @@
         <%@include file="agent-nav.jsp" %>
         <br>
         <div class="container">
-            
-            
 
-            <% List<pending_for_agent> res = agentQ.getOutForDeliveryForAgent(session.getAttribute("id").toString());
-                if (res.size() == 0) {
+
+
+            <%
+                try {
+                    List<pending_for_agent> res = agentQ.getOutForDeliveryForAgent(session.getAttribute("id").toString());
+                    if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No new deliveries</h4>
@@ -66,7 +69,12 @@
                     <% }%>
 
                 </tbody>
-                <% }%>
+                <% }
+
+                    } catch (SQLException e) {
+                     request.setAttribute("ExceptionObject", e);
+                        request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                    }%>
             </table>
 
 
@@ -230,7 +238,7 @@
                         url: "/agentServices/setDeliveryStatus",
                         type: 'POST',
                         data: {
-                            delivery_id :delivery_id_to_remove,
+                            delivery_id: delivery_id_to_remove,
                             delivery_status: status
                         },
                         success: function (e) {

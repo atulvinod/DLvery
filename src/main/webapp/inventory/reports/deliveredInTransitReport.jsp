@@ -4,7 +4,7 @@
     Author     : atulv
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
 
@@ -30,10 +30,12 @@
             <br>
             <h5>Deliveries Damaged In Transit Report</h5>
             <hr>
-            <% List<assigned_delivery> list = sql.getAssignedAndTransitDamagedInventoryStatus();
-                if (list.size() == 0) {
+            <%
+                try {
+                    List<assigned_delivery> list = sql.getAssignedAndTransitDamagedInventoryStatus();
+                    if (list.size() == 0) {
             %>
-          <div class="text-center no-inventory-banner" id="no-inventory" >
+            <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No data available</h4>
             </div>
 
@@ -51,8 +53,9 @@
                         <th>Delivery Attempted On</th>
                     </tr>
                 </thead>
-                
-                <% for(int i = 0 ; i < list.size() ; i++){ assigned_delivery item = list.get(i);%>
+
+                <% for (int i = 0; i < list.size(); i++) {
+                        assigned_delivery item = list.get(i);%>
                 <tbody>
                     <tr>
                         <td><%out.print(item.getInventory_id());%></td>
@@ -63,16 +66,22 @@
                         <td><%out.print(item.getMove_out_date());%></td>
                         <td><%out.print(item.getDelivery_date());%></td>
                     </tr>
-                    
+
                 </tbody>
-                
+
                 <% }%>
             </table>
-            
 
 
 
-            <%}%>
+
+            <%}
+
+                } catch (Exception e) {
+                    request.setAttribute("ExceptionObject", e);
+                    request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                }
+            %>
         </div>
 
     </body>

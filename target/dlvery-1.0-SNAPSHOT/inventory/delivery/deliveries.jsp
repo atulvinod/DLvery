@@ -4,7 +4,8 @@
     Author     : atulv
     Description : To assign deliveries to agents in the database, checks for unassigned
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.SQLException"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <%@page import="com.mycompany.dlvery.model.agent_details"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
@@ -34,15 +35,17 @@
         </div>
         <div class="container">
             <br>
-        <h5>Assign Deliveries to Agents</h5>
-        <br>
+            <h5>Assign Deliveries to Agents</h5>
+            <br>
         </div>
-        
+
         <div  class="container">
-            
-            
-            <% List<inventory_table> getUndeliveredInventory = sql.getUnAssigned();
-                if (getUndeliveredInventory.size() == 0) {   %>
+
+
+            <%
+                try {
+                    List<inventory_table> getUndeliveredInventory = sql.getUnAssigned();
+                    if (getUndeliveredInventory.size() == 0) {   %>
 
 
             <%      } else {
@@ -116,6 +119,10 @@
                 </div>
             </div>
         </div>
+        <%} catch (SQLException e) {
+                request.setAttribute("ExceptionObject", e);
+                request.getServletContext().getRequestDispatcher("errorPage.jsp");
+            }%>
         <script src="/javascript/deliveries.js"></script>
     </body>
 </html>

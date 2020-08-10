@@ -4,7 +4,7 @@
     Author     : atulv
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <!DOCTYPE html>
 <%@page import="com.mycompany.dlvery.model.agent_details"%>
 <%@page import="java.util.List"%>

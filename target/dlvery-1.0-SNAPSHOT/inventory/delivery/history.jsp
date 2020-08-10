@@ -4,10 +4,11 @@
     Author     : atulv
 --%>
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="com.mycompany.dlvery.model.delivery_details"%>
 <jsp:useBean id="inv" class="com.mycompany.dlvery.datalayer.inventoryQueries"/>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,9 +29,11 @@
 
         <div class="container">
 
-            <% List<delivery_details> res = inv.getAllDeliveredDetails();
+            <%
+                try {
+                    List<delivery_details> res = inv.getAllDeliveredDetails();
 
-                if (res.size() == 0) {
+                    if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No new deliveries</h4>
@@ -64,7 +67,12 @@
                     <% }%>
 
                 </tbody>
-                <% }%>
+                <% }
+
+                    } catch (SQLException e) {
+                        request.setAttribute("ExceptionObject", e);
+                        request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                    }%>
             </table>
 
 

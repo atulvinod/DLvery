@@ -29,7 +29,6 @@ public class setDeliveryStatus extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
     inventoryQueries q;
 
     /**
@@ -46,23 +45,29 @@ public class setDeliveryStatus extends HttpServlet {
         String delivery_id = request.getParameter("delivery_id");
         String delivery_status = request.getParameter("delivery_status");
 
-        switch (delivery_status) {
-            case "DOOR_LOCK":
-                agentQueries.setDoorLocked(delivery_id);
-                break;
-            case "TRANSIT_DAMAGED":
-                agentQueries.setTransitDamaged(delivery_id);
-                break;
-            case "RETURNED":
-                agentQueries.setReturned(delivery_id);
-                break;
-            case "OUT_FOR_DELIVERY":
-                inventoryQueries.setOutForDelivery(delivery_id);
-                break;
-            default:
-                break;
+        try {
+            switch (delivery_status) {
+                case "DOOR_LOCK":
+                    agentQueries.setDoorLocked(delivery_id);
+                    break;
+                case "TRANSIT_DAMAGED":
+                    agentQueries.setTransitDamaged(delivery_id);
+                    break;
+                case "RETURNED":
+                    agentQueries.setReturned(delivery_id);
+                    break;
+                case "OUT_FOR_DELIVERY":
+                    inventoryQueries.setOutForDelivery(delivery_id);
+                    break;
+                default:
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("ExceptionObject", e);
+            request.getServletContext().getRequestDispatcher("errorPage.jsp");
         }
-        
     }
 
     /**
@@ -80,5 +85,5 @@ public class setDeliveryStatus extends HttpServlet {
         super.init(); //To change body of generated methods, choose Tools | Templates.
         q = new inventoryQueries();
     }
-    
+
 }

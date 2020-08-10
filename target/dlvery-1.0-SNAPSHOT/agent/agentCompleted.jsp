@@ -5,9 +5,10 @@
 --%>
 
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true" errorPage="/errorPage.jsp"%>
 <%@page import="com.mycompany.dlvery.datalayer.agentQueries" %>
 <%@page import="com.mycompany.dlvery.model.delivery_table" %>
 
@@ -23,9 +24,11 @@
         <%@include file="agent-nav.jsp" %>
         <div class="container">
 
-            <% List<delivery_table> res = agentQ.getDeliveredForAgent(session.getAttribute("id").toString());
+            <%
+                try {
+                    List<delivery_table> res = agentQ.getDeliveredForAgent(session.getAttribute("id").toString());
 
-                if (res.size() == 0) {
+                    if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No new deliveries</h4>
@@ -59,14 +62,19 @@
                     <% }%>
 
                 </tbody>
-                <% }%>
+                <% }
+                    } catch (SQLException e) {
+                        request.setAttribute("ExceptionObject", e);
+                        request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                    }
+                %>
             </table>
 
 
         </div>
-        
-                <%@include file="/utility/showSignature.jsp" %>
+
+        <%@include file="/utility/showSignature.jsp" %>
 
     </body>
-   
+
 </html>

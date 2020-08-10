@@ -4,7 +4,7 @@
     Author     : atulv
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="/errorPage.jsp"%>
 <%@page import="com.mycompany.dlvery.model.agent_details"%>
 <%@page import="java.util.List"%>
 <%@page import="java.sql.ResultSet"%>
@@ -71,10 +71,11 @@
         <div class="container">
             <br>
             <%
-                List<assigned_delivery> list = null;
+                try {
+                    List<assigned_delivery> list = null;
 
-                if (request.getAttribute("fromDate") == null && request.getAttribute("toDate") == null) {
-                    list = sql.getAssignedAndDeliveredInventoryStatus();
+                    if (request.getAttribute("fromDate") == null && request.getAttribute("toDate") == null) {
+                        list = sql.getAssignedAndDeliveredInventoryStatus();
             %>
             <h5>Showing all Deliveries</h5>
             <%                    } else {
@@ -124,8 +125,13 @@
                 <h6>No Deliveries</h6>
             </div>
 
-            <%}%>
+            <%}
+
+                } catch (Exception e) {
+                    request.setAttribute("ExceptionObject", e);
+                    request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                }%>
 
         </div>
-            <%@include file="/utility/showSignature.jsp" %>
+        <%@include file="/utility/showSignature.jsp" %>
 </html>

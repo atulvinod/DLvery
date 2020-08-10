@@ -6,8 +6,9 @@
 
 
 
+<%@page import="java.sql.SQLException"%>
 <%@page import="com.mycompany.dlvery.model.pending_for_agent"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true" errorPage="/errorPage.jsp"%>
 <%@page import="com.mycompany.dlvery.datalayer.agentQueries" %>
 <%@page import="com.mycompany.dlvery.model.delivery_table" %>
 <jsp:useBean id="agentQ" class="com.mycompany.dlvery.datalayer.agentQueries"/>
@@ -23,7 +24,7 @@
         <%@include file="/navbar.jsp" %>
         <%@include file="agent-nav.jsp" %>
         <%
-            String filterBy = (String) request.getAttribute("filterBy") != null ? (String) request.getAttribute("filterBy") :"TODAY";
+            String filterBy = (String) request.getAttribute("filterBy") != null ? (String) request.getAttribute("filterBy") : "TODAY";
             //out.println(filterBy);
         %>
 
@@ -68,19 +69,20 @@
             <%
                 //Generate the items 
 
-                List<pending_for_agent> res = null;
+                try {
+                    List<pending_for_agent> res = null;
 
-                if (filterBy.equals("TODAY")) {
-                    res = agentQ.getExpectedDeliveryTodayForAgent(session.getAttribute("id").toString());
-                }
-                if (filterBy.equals("MISSED")) {
-                    res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
-                }
-                if (filterBy.equals("UPCOMING")) {
-                    res = agentQ.getUpcomingDeliveryForAgent(session.getAttribute("id").toString());
-                }
+                    if (filterBy.equals("TODAY")) {
+                        res = agentQ.getExpectedDeliveryTodayForAgent(session.getAttribute("id").toString());
+                    }
+                    if (filterBy.equals("MISSED")) {
+                        res = agentQ.getPendingDeliveriesForAgent(session.getAttribute("id").toString());
+                    }
+                    if (filterBy.equals("UPCOMING")) {
+                        res = agentQ.getUpcomingDeliveryForAgent(session.getAttribute("id").toString());
+                    }
 
-                if (res.size() == 0) {
+                    if (res.size() == 0) {
             %>
             <div class="text-center no-inventory-banner" id="no-inventory" >
                 <h4 class="text-center text-muted">No new deliveries</h4>
@@ -120,7 +122,13 @@
                     <% }%>
 
                 </tbody>
-                <% }%>
+                <% }
+
+                        } catch (SQLException e) {
+                            request.setAttribute("ExceptionObject", e);
+                            request.getServletContext().getRequestDispatcher("errorPage.jsp");
+                        }
+                    }%>
             </table>
 
 
@@ -141,12 +149,12 @@
 
                 },
                 success: function (e) {
-                    $("#inv"+delivery_id).remove();
+                    $("#inv" + delivery_id).remove();
                     alert("This delivery is now taken out for delivery");
                 }
             })
         }
-        $("#filterBy").change(function(e){
+        $("#filterBy").change(function (e) {
             $("#filterForm").submit();
         });
     </script>

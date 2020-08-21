@@ -58,6 +58,13 @@ public class getInventoryDashboard extends HttpServlet {
         request.getServletContext().getRequestDispatcher("/inventory/dashboard.jsp").forward(request, response);
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      req.getSession().invalidate();//To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *

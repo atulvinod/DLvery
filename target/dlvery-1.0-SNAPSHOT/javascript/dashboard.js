@@ -18,13 +18,13 @@ $('#newInventoryItemForm').submit(function (e) {
     e.preventDefault();
     let formdata = $('#newInventoryItemForm').serialize();
     let deliveryToContact = $('#deliveryToContactNumber').val();
-    
-    if(deliveryToContact.length != 10){
+
+    if (deliveryToContact.length != 10 || !RegExp('^[0-9]+$').test(deliveryToContact)) {
         $('#deliveryToContactNumber').focus();
         alert("Phone number is not valid");
         return;
     }
-    
+
     console.log(formdata);
     var moveInDate = $('#moveInDate').val();
     var moveOutDate = $('#moveOutDate').val();
@@ -37,8 +37,8 @@ $('#newInventoryItemForm').submit(function (e) {
         alert("Move out date cannot be in the past");
         return;
     }
-    
-    
+
+
     $.ajax({
         url: "/services/createNewInventoryItem",
         type: 'POST',
@@ -78,19 +78,31 @@ $('#newInventoryItemForm').submit(function (e) {
                     <td> <a href="#" onclick="deleteInventory(${data})"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                 </tr> `);
             $('#inventoryTable').append(newItem);
-            
+
             $('#exampleModal').modal('hide');
         },
         error: function (xhr, textStatus) {
-            if(xhr.status == 409){
-                $('.invalid-feedback').css('display','block');
-                $('#skuInput').css("border","1px solid red");
+            if (xhr.status == 409) {
+                $('.invalid-feedback').css('display', 'block');
+                $('#skuInput').css("border", "1px solid red");
             }
         },
-        
+
     })
 });
 
+// To update value of the text label 
+$('#uploadInventory').change(function(e){
+    let fileName = e.target.value.split('\\');    
+    let extension = fileName[fileName.length-1].split(".");
+    if(extension[extension.length-1]!="json"){
+        $('#uploadInventory').addClass("error");
+        $('#uploadInventoryButton').addClass("disabled");
+    }else{
+        $('#uploadInventoryButton').removeClass("disabled");
+    }
+   $('#inventoryFileLabel').text(fileName[fileName.length-1]);
+})
 function deleteInventory(id) {
     console.log(id);
     $.ajax({
@@ -129,3 +141,14 @@ function updateAgent(id, status) {
     })
 }
 
+$("#categoryFilter").change(function (e) {
+    $("#filterForm").submit();
+})
+$("#stateFilter").change(function (e) {
+    $("#filterForm").submit();
+})
+function uploadInventory() {
+    $('#uploadInventoryFileForm').submit();
+
+
+}

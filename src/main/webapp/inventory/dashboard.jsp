@@ -290,15 +290,16 @@
                     </div>
                     <div class="modal-body">
                         <form action="/inventory/getInventoryDashboard" method="POST" enctype="multipart/form-data" id="uploadInventoryFileForm">
+                            <h6>Please upload JSON file following the inventory format.</h6>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="uploadInventory" name="uploadInventory">
-                                <label class="custom-file-label" for="customFile">Choose Inventory file</label>
+                                <label class="custom-file-label" for="customFile" id="inventoryFileLabel">Choose Inventory file</label>
                             </div>
 
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-success" onclick="uploadInventory()">Upload File</button>
+                        <button class="btn btn-success" onclick="uploadInventory()" id="uploadInventoryButton">Upload File</button>
                     </div>
                 </div>
             </div>
@@ -311,18 +312,5 @@
         <script src="/javascript/dashboard.js"></script>
 
     </body>
-    <script>
-                            $("#categoryFilter").change(function (e) {
-                                $("#filterForm").submit();
-                            })
-                            $("#stateFilter").change(function (e) {
-                                $("#filterForm").submit();
-                            })
-                            function uploadInventory() {
-                                $('#uploadInventoryFileForm').submit();
-
-
-                            }
-
-    </script>
+  
 </html>

@@ -62,8 +62,8 @@ public class sessionInvalidate extends HttpServlet {
             c.setMaxAge(0);
         }
         request.getSession().invalidate();
-        
-      request.getServletContext().getRequestDispatcher("index.jsp").forward(request, response);
+        System.out.println("Session cleared");
+      
         
     }
 
